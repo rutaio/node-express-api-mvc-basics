@@ -4,6 +4,7 @@ const fs = require('fs');
 // kelias kaip Node surasti ta faila:
 const filePath = './database/cars.json';
 
+// GET:
 const getAllCars = () => {
   const data = fs.readFileSync(filePath);
 
@@ -18,7 +19,9 @@ const getCarById = (id) => {
   return cars.find((car) => car.id === id);
 };
 
+
 module.exports = {
   getAllCars,
   getCarById,
+ 
 };

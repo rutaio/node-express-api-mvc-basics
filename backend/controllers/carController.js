@@ -1,6 +1,7 @@
 // Controller - valdo logika, kaip reaguoti i API uzklausas/requests, ir kreipiasi i Model, jeigu atitinka business logika (t.y. grazins visada):
 const Car = require('../models/carModel');
 
+// GET:
 const getCars = (req, res) => {
   res.json(Car.getAllCars());
 };
@@ -14,6 +15,9 @@ const getCarById = (req, res) => {
   }
   res.json(car);
 };
+
+// DELETE:
+
 
 // iseksportuojame funkcija:
 module.exports = {

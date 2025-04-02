@@ -1,3 +1,10 @@
+.car-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
 .hero {
   background: linear-gradient(135deg, #3182ce 0%, #63b3ed 100%);
   color: white;

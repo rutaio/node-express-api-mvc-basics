@@ -7,6 +7,7 @@ import { Car } from '../../types/types';
 export const CarList = () => {
   const [cars, setCars] = useState<Car[]>([]);
 
+  // fetchinam visus automobilius is backendo:
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -19,6 +20,7 @@ export const CarList = () => {
     fetchCars();
   }, []);
 
+  // atvaizduojam visus automobilius kortelese:
   return (
     <>
       <div className="hero">

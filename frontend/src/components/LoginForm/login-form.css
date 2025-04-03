@@ -1,0 +1,17 @@
+.login-container {
+  border: 2px solid red;
+  background: white;
+}
+
+h2 {
+  color: #000206;
+}
+
+.form-container {
+  background-color: white;
+  border: none;
+}
+
+form {
+  padding: 20px;
+}

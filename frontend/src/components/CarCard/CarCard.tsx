@@ -1,7 +1,7 @@
 // sis hook pades nusiust vartotoja i kita puslapi, jam paspaudus ant masinos korteles:
 import { useNavigate } from 'react-router-dom';
 import './car-card.css';
-import { Car } from '../../types/types';
+import { Car } from '../../types/CarTypes';
 
 interface CarCardProps {
   car: Car;
@@ -14,7 +14,7 @@ export const CarCard = ({ car }: CarCardProps) => {
   const handleCardClick = () => {
     // navigate hook'as - nuveda i kita puslapio, jo neperkraunant:
     navigate(`/cars/${car.id}`);
-    
+
     // jei noretume tiesiog nusiusti vartotoja i ta puslapi:
     //  window.location.href = '/cars' + car.id;
     // bet siuo atveju perkrauna puslapi...

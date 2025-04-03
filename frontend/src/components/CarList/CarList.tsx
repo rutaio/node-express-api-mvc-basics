@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './car-list.css';
 import axios from 'axios';
 import { CarCard } from '../CarCard/CarCard';
-import { Car } from '../../types/types';
+import { Car } from '../../types/CarTypes';
 
 export const CarList = () => {
   const [cars, setCars] = useState<Car[]>([]);

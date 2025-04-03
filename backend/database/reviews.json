@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Greta",
+    "description": "Prabangus, bet ekonomiskas automobilis!"
+  },
+  {
+    "id": "2",
+    "name": "Rolandas",
+    "description": "Prabangus ir galingas automobilis"
+  },
+  {
+    "id": "3",
+    "name": "Artiom",
+    "description": "Patikimas ir ekonomiskas miesto automobilis"
+  },
+  {
+    "id": "4",
+    "name": "Kestutis",
+    "description": "Prabangus ekonomiskas automobilis!"
+  },
+  {
+    "id": "5",
+    "name": "Lukas",
+    "description": "Galingas automobilis"
+  },
+  {
+    "id": "6",
+    "name": "Marta",
+    "description": "Ekonomiskas miesto automobilis"
+  }
+]

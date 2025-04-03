@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './car-details.css';
-import { Car } from '../../types/types';
+import { Car } from '../../types/CarTypes';
 
 export const CarDetails = () => {
   // Hooks apsirasome virsuje

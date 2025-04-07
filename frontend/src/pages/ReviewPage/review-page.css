@@ -26,6 +26,22 @@
   opacity: 0.9;
 }
 
+.add-review-button {
+  width: 250px;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-review-button:hover {
+  opacity: 0.8;
+}
+
 .section {
   padding: 2rem;
   margin: 0 auto;
@@ -37,4 +53,3 @@
   color: #2d3748;
   margin-bottom: 1rem;
 }
-

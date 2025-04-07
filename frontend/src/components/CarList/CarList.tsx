@@ -3,6 +3,7 @@ import './car-list.css';
 import axios from 'axios';
 import { CarCard } from '../CarCard/CarCard';
 import { Car } from '../../types/CarTypes';
+import { API_URL } from '../../constants/global';
 
 export const CarList = () => {
   const [cars, setCars] = useState<Car[]>([]);
@@ -11,7 +12,7 @@ export const CarList = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/cars');
+        const response = await axios.get(`${API_URL}/cars`);
         setCars(response.data);
       } catch (error) {
         console.log(error);

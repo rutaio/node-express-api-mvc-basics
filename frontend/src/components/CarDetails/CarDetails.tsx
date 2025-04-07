@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './car-details.css';
 import { Car } from '../../types/CarTypes';
+import {API_URL} from '../../constants/global';
 
 export const CarDetails = () => {
   // Hooks apsirasome virsuje
@@ -23,7 +24,7 @@ export const CarDetails = () => {
     const fetchCars = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/cars/${id}`
+          `${API_URL}/cars/${id}`
         );
         setCar(response.data);
       } catch (error) {
@@ -44,7 +45,7 @@ export const CarDetails = () => {
         {/* Kaire puse */}
         <div className="car-detail-left">
           <img
-            src={car.image}
+            src={car?.image}
             alt="Automobilio paveikslelis"
             className="car-detail-image"
           />
@@ -54,9 +55,9 @@ export const CarDetails = () => {
           {/* header */}
           <div className="car-header">
             <h2>
-              {car.make} {car.model}
+              {car?.make} {car?.model}
             </h2>
-            <p className="car-year">{car.year} m.</p>
+            <p className="car-year">{car?.year} m.</p>
           </div>
           <div className="car-description">
             <p>Nuostabus automobilis!</p>
@@ -64,19 +65,19 @@ export const CarDetails = () => {
           <div className="car-specs">
             <div className="spec-item">
               <span className="spec-label">Pavaru deze: </span>
-              <span className="spec-value">{car.transmission}</span>
+              <span className="spec-value">{car?.transmission}</span>
             </div>
             <div className="spec-item">
               <span className="spec-label">Kuro tipas: </span>
-              <span className="spec-value">{car.fuelType}</span>
+              <span className="spec-value">{car?.fuelType}</span>
             </div>
             <div className="spec-item">
               <span className="spec-label">Sedimu vietu: </span>
-              <span className="spec-value">{car.seats}</span>
+              <span className="spec-value">{car?.seats}</span>
             </div>
             <div className="spec-item">
               <span className="spec-label">Kaina per diena: </span>
-              <span className="spec-value">${car.price}</span>
+              <span className="spec-value">${car?.price ?? 'Ivyko klaida'}</span>
             </div>
           </div>
           <div className="car-actions">

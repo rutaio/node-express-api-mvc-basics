@@ -2,31 +2,64 @@
   {
     "id": "1",
     "name": "Greta",
-    "description": "Prabangus, bet ekonomiskas automobilis!"
+    "description": "Prabangus, bet ekonomiskas automobilis!",
+    "date": "2023-10-01",
+    "rating": 5
   },
   {
     "id": "2",
     "name": "Rolandas",
-    "description": "Prabangus ir galingas automobilis"
+    "description": "Prabangus ir galingas automobilis",
+    "date": "2024-09-15",
+    "rating": 1
   },
   {
     "id": "3",
     "name": "Artiom",
-    "description": "Patikimas ir ekonomiskas miesto automobilis"
+    "description": "Patikimas ir ekonomiskas miesto automobilis",
+    "date": "2023-02-21",
+    "rating": 3
   },
   {
     "id": "4",
     "name": "Kestutis",
-    "description": "Prabangus ekonomiskas automobilis!"
+    "description": "Prabangus ekonomiskas automobilis!",
+    "date": "2023-04-01",
+    "rating": 5
   },
   {
     "id": "5",
     "name": "Lukas",
-    "description": "Galingas automobilis"
+    "description": "Galingas automobilis",
+    "date": "2024-11-11",
+    "rating": 4
   },
   {
     "id": "6",
     "name": "Marta",
-    "description": "Ekonomiskas miesto automobilis"
+    "description": "Ekonomiskas miesto automobilis",
+    "date": "2024-10-01",
+    "rating": 4
+  },
+  {
+    "id": "9ca5987e-a075-40bd-8b2b-f637637d129d",
+    "name": "Ruta",
+    "rating": 5,
+    "description": "test",
+    "date": "2025-04-07T18:09:06.289Z"
+  },
+  {
+    "id": "f74cf18a-f037-4dbe-b52c-80898aa199fc",
+    "name": "Ruta",
+    "rating": 6,
+    "description": "test",
+    "date": "2025-04-07T18:14:14.811Z"
+  },
+  {
+    "id": "c3c1c0b2-3105-4f30-b446-b8a04735db8c",
+    "name": "Ruta",
+    "rating": 6,
+    "description": "hhh",
+    "date": "2025-04-07T18:14:31.712Z"
   }
 ]

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons'
 
 export const LoginForm = () => {
+
   return (
     <div className="login-container">
       <div className="close-icon">

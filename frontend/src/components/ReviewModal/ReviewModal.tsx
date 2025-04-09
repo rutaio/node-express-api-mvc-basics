@@ -2,7 +2,6 @@ import './review-modal.css';
 import axios from 'axios';
 import { useState } from 'react';
 import { API_URL } from '../../constants/global';
-import { Review } from '../../types/ReviewTypes';
 
 interface ReviewModalProps {
   onModalClose: () => void;
@@ -15,7 +14,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ onModalClose }) => {
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await axios.post(`${API_URL}/${review.id}`, {
+    await axios.post(`${API_URL}/reviews`, {
       name,
       description,
       rating,

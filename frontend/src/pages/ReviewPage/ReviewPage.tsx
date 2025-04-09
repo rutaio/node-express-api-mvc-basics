@@ -10,17 +10,17 @@ export const ReviewPage = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/reviews`);
+      setReviews(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // uzkrauna duomenis kai pasileidzia sis puslapis:
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/reviews`);
-        setReviews(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchReviews();
   }, []);
 
@@ -46,7 +46,10 @@ export const ReviewPage = () => {
         </div>
       </div>
       {isModalVisible && (
-        <ReviewModal onModalClose={() => setIsModalVisible(false)} />
+        <ReviewModal
+          onModalClose={() => setIsModalVisible(false)}
+          onSuccess={fetchReviews}
+        />
       )}
     </>
   );

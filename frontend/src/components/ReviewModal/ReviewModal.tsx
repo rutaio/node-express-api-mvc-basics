@@ -3,24 +3,45 @@ import axios from 'axios';
 import { useState } from 'react';
 import { API_URL } from '../../constants/global';
 
+// susikuriame papildoma propsa onSuccess:
 interface ReviewModalProps {
   onModalClose: () => void;
+  onSuccess: () => void;
 }
 
-export const ReviewModal: React.FC<ReviewModalProps> = ({ onModalClose }) => {
+export const ReviewModal: React.FC<ReviewModalProps> = ({
+  onModalClose,
+  onSuccess,
+}) => {
+  // issitraukiu tai, ka zmogus nori issiust kaip review:
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number | null>(0);
+  const [error, setError] = useState<string | null>(null);
 
+  // siunciu duomenis:
   const handleFormSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    await axios.post(`${API_URL}/reviews`, {
-      name,
-      description,
-      rating,
-    });
-
-    window.location.reload();
+    event?.preventDefault();
+    // siuncia request:
+    try {
+      await axios.post(`${API_URL}/reviews`, {
+        name,
+        description,
+        rating,
+      });
+      // jei request yra sekmingas, iskvieciam funkcija is tevinio elemento ReviewPage:
+      onModalClose();
+      // kai forma sekmingai issiusta, iskvieciu papildoma propsa:
+      onSuccess();
+      setError(null);
+    } catch (error) {
+      // idedame atejusi error:
+      if (axios.isAxiosError(error)) {
+        // einu gilyn per objektus:
+        const errorMessage = error.response?.data?.error || 'Ivyko klaida';
+        setError(errorMessage);
+      }
+    }
   };
 
   return (
@@ -34,8 +55,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ onModalClose }) => {
               <input
                 type="text"
                 id="name"
-                required
-                value={name}
+              //  required
                 onChange={(event) => setName(event.target.value)}
               />
             </div>
@@ -45,8 +65,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ onModalClose }) => {
               <textarea
                 id="description"
                 rows={4}
-                required
-                value={description}
+             //   required
                 onChange={(event) => setDescription(event.target.value)}
               />
             </div>
@@ -57,11 +76,12 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ onModalClose }) => {
                 type="number"
                 id="rating"
                 placeholder="nuo 1 iki 5"
-                required
-                value={rating}
+              //  required
                 onChange={(event) => setRating(Number(event.target.value))}
               />
             </div>
+
+            {error && <div className="error-container">{error}</div>}
 
             <div className="modal-actions">
               <button type="button" onClick={onModalClose}>

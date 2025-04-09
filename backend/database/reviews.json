@@ -42,31 +42,17 @@
     "rating": 4
   },
   {
-    "id": "9ca5987e-a075-40bd-8b2b-f637637d129d",
-    "name": "Ruta",
+    "id": "80de54a4-d385-42f0-a0c9-7578e5967a00",
+    "name": "ruta io",
+    "rating": 5,
+    "description": "",
+    "date": "2025-04-09T17:35:28.730Z"
+  },
+  {
+    "id": "d8ddda0d-d36d-4f28-aa77-107bb0884b9c",
+    "name": "ruta io",
     "rating": 5,
     "description": "test",
-    "date": "2025-04-07T18:09:06.289Z"
-  },
-  {
-    "id": "f74cf18a-f037-4dbe-b52c-80898aa199fc",
-    "name": "Ruta",
-    "rating": 6,
-    "description": "test",
-    "date": "2025-04-07T18:14:14.811Z"
-  },
-  {
-    "id": "c3c1c0b2-3105-4f30-b446-b8a04735db8c",
-    "name": "Ruta",
-    "rating": 6,
-    "description": "hhh",
-    "date": "2025-04-07T18:14:31.712Z"
-  },
-  {
-    "id": "3d89ea22-0f6b-4ab2-9b25-77327e54dd06",
-    "name": "testas testuotojas",
-    "rating": 2,
-    "description": "testas!",
-    "date": "2025-04-09T15:35:26.564Z"
+    "date": "2025-04-09T17:35:32.009Z"
   }
 ]

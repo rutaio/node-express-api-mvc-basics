@@ -1,16 +1,18 @@
 // carRoutes.js - tai API marsrutai, kurie tvarko uzklausas, susijusias su automobiliais/cars
 
-// kad naudoti Routes, reikia susiinstaliuoti Express:
 const express = require('express');
 
-// susiimportuoju ta funkcija:
-const { getCars, getCarById } = require('../controllers/carController');
+// ankstesnis budas:
+// const { getCars, getCarById } = require('../controllers/carController');
+const carsController = require('../controllers/carController');
 
-// reikia apsirasyti ir Routeri, kuris nukreips API requests i atitinkama controlleri:
 const router = express.Router();
 
-// cia irasau ta funkcija:
-router.get('/', getCars);
-router.get('/:id', getCarById);
+router.get('/', carsController.getCars);
+router.get('/:id', carsController.getCarById);
+router.post('/', carsController.createCar);
+router.patch('/:id', carsController.updateCar);
+router.delete('/:id', carsController.deleteCar);
 
 module.exports = router;
+

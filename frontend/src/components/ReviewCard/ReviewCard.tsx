@@ -9,11 +9,12 @@ interface ReviewCardProps {
 }
 
 export const ReviewCard = ({ review }: ReviewCardProps) => {
- 
-  const formattedDate = new Date(review.date).toLocaleDateString('lt-LT', {
+
+  const formattedDate = new Date(review.createdAt).toLocaleDateString('lt-LT', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   });
 
   return (

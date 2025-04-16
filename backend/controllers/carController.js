@@ -27,7 +27,7 @@ exports.getCars = async (req, res) => {
 // res.json(car);
 // };
 
-// GET by id: naujas budas: - how to test with postman if this is correct?
+// GET by id: naujas budas: - works on postman! :)
 exports.getCarById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -54,7 +54,7 @@ exports.createCar = async (req, res) => {
   }
 };
 
-// PATCH - how to test with postman if this is correct?
+// PATCH - how to test with postman if this is correct??
 exports.updateCar = async (req, res) => {
   try {
     const id = req.params.id;
@@ -73,7 +73,7 @@ exports.updateCar = async (req, res) => {
   }
 };
 
-// DELETE - how to test with postman if this is correct?
+// DELETE - how to test with postman if this is correct??
 exports.deleteCar = async (req, res) => {
   try {
     const id = req.params.id;

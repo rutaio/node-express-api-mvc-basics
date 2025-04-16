@@ -37,7 +37,7 @@ exports.getCarById = async (req, res) => {
       return res.status(404).json({ error: 'Car not found' });
     }
 
-    res.status(201).json({ message: 'Car found successfully' });
+    res.status(201).json(car);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }

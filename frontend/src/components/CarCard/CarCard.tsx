@@ -13,7 +13,7 @@ export const CarCard = ({ car }: CarCardProps) => {
 
   const handleCardClick = () => {
     // navigate hook'as - nuveda i kita puslapio, jo neperkraunant:
-    navigate(`/cars/${car.id}`);
+    navigate(`/cars/${car._id}`);
 
     // jei noretume tiesiog nusiusti vartotoja i ta puslapi:
     //  window.location.href = '/cars' + car.id;

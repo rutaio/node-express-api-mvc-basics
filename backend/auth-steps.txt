@@ -1,0 +1,21 @@
+JWT authentification
+
+JWT (JSON Web Token) - tai tiesiog tekstinis raktas (tokenas), kuri serveris sugeneruoja ir atiduoda vartotojui.
+Tas tokenas saugo informacija (dazniausiai vartotojo id) ir yra pasirasomas specialiu serverio slaptazodziu, kuri laikome .env faile.
+
+Eiga:
+
+1. Vartotojas suveda email ir slaptazodi, ir spaudzia registruotis mygtuka.
+FRONTEND dalis: mes siunciam POST request i auth/register API endpointa.
+BACKEND dalis: Gaus duomenis ir patikrins, ar toks emeil egzistuoja. 
+- Jei egzistuoja, siunciame zinute "neteisingi duomenys" (vietoj - "toks emeil jau uzimtas" <-- nes tai pazeidzia GDPR teises).
+- Jei neegzistuos, uzkoduoti vartotojo slaptazodi, pries sukuriant nauja vartotoja duomenu bazeje.
+PADES: NPM paketas bcrypt - uzkoduos slaptazodi, pries issaugojant i duomenu baze.
+
+2. Sugeneruosime JWT Tokena ir atiduosime vartotojui.
+FRONTEND: gaus tokena ir issaugos ji i localStorage.
+BACKEND: tokenas bus sugeneruotas naudojant jsonwebtoken ir vartotojo id.
+
+
+
+

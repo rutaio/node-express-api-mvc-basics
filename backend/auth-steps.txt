@@ -3,7 +3,8 @@ JWT authentification
 JWT (JSON Web Token) - tai tiesiog tekstinis raktas (tokenas), kuri serveris sugeneruoja ir atiduoda vartotojui.
 Tas tokenas saugo informacija (dazniausiai vartotojo id) ir yra pasirasomas specialiu serverio slaptazodziu, kuri laikome .env faile.
 
-Eiga:
+
+// REGISTRACIJA (EIGA)
 
 1. Vartotojas suveda email ir slaptazodi, ir spaudzia registruotis mygtuka.
 FRONTEND dalis: mes siunciam POST request i auth/register API endpointa.
@@ -16,6 +17,13 @@ PADES: NPM paketas bcrypt - uzkoduos slaptazodi, pries issaugojant i duomenu baz
 FRONTEND: gaus tokena ir issaugos ji i localStorage.
 BACKEND: tokenas bus sugeneruotas naudojant jsonwebtoken ir vartotojo id.
 
+// LOGIN (EIGA)
+
+1- Sukuriame /login API endpointa, kuris priims email ir password.
+FRONTEND: vartotojas suveda email ir password, ir spaudzia prisijungti mygtuka.
+BACKEND: gaus duomenis, patikrins, ar suvestas email ir password, tada patikrins duomenu bazeje ar toks naudotojas egzistuoja.
+- Jeigu egzistuoja, patikrins suvesta slaptazodi su bcrypt.compare() funkcija.
+- Jeigu slaptazodziai sutampa sugeneruojam nauja access token (reiskia zmogus yra prisijunges).
 
 
 

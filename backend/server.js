@@ -19,7 +19,7 @@ dotenv.config();
 
 const app = express();
 
-// Cors leidzia siusti uzklausas is kito domeno, pvz: localhost: 3000 (backend) --> localhost:5173
+// Cors leidzia siusti uzklausas is kito domeno, pvz: localhost: 3000 (backend) --> localhost:5173 (frontend)
 app.use(cors());
 app.use(express.json());
 

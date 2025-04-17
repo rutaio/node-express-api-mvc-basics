@@ -51,6 +51,13 @@ userSchema.pre('save', async function (next) {
   }
 });
 
+// tikriname ar slaptazodis sutampa su MongoDB ir zmogaus ivestu slaptazodziu:
+userSchema.methods.comparePassword = async function (password) {
+  // bcrypt.compare() - palygina du slaptazodzius
+  // this. - reiskia kad ima duomenis is savo objekto
+  return bcrypt.compare(password, this.password);
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

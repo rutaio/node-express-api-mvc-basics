@@ -11,6 +11,8 @@ export const Navigation = () => {
         <ul>
           <li>
             <Link to="/">Pagrindinis</Link>
+            <Link to="/reviews">Atsiliepimai</Link>
+            <Link to="/login">Prisijungti</Link>
           </li>
         </ul>
       </div>

@@ -1,54 +1,85 @@
 // Auth Context - bus atsakingas uz zmogaus autentifikacija, laikys funkcijas bei state
 
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 import { API_URL } from '../constants/global';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  token: string | null;
-  error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-}
-
-export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isLoading: true,
-  isAuthenticated: false,
-  token: null,
-  error: null,
-  login: async () => {},
-  register: async () => {},
-});
-
-interface AuthProviderProps {
-  children: React.ReactNode;
-}
 
 interface User {
   _id: string;
   name: string;
   email: string;
-  password: string;
+  // ar cia nereikia nurodyti? password: string;
   role: string;
-  createdAt: string;
-  updatedAt: string;
+}
+
+interface AuthContextType {
+  user: User | null;
+  access_token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+}
+
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  access_token: null,
+  isAuthenticated: false,
+  isLoading: true,
+  error: null,
+  register: async () => {},
+  login: async () => {},
+  logout: () => {},
+});
+
+interface AuthProviderProps {
+  children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem('access_token')
-  );
-
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem('access_token') || null
+  );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadUser = async () => {
+      if (token) {
+        try {
+          setIsLoading(true);
+
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          const response = await axios.get(`${API_URL}/auth/user`, config);
+
+          setUser(response.data);
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.log(error);
+          localStorage.removeItem('access_token');
+          setToken(null);
+          setUser(null);
+          setIsAuthenticated(false);
+          setError('Authentication failed. Please log in again.');
+        }
+      }
+      setIsLoading(false);
+    };
+
+    loadUser();
+  }, [token]);
 
   // REGISTER
   const register = async (name: string, email: string, password: string) => {
@@ -64,11 +95,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       localStorage.setItem('access_token', response.data.access_token);
       setToken(response.data.access_token);
+      setUser(response.data.user);
       setIsAuthenticated(true);
       navigate('/dashboard');
     } catch (error) {
-      console.log(error);
-      setError('Klaida registruojant vartotoja');
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.data?.error
+          ? error.response.data.error
+          : 'Registration failed. Please try again.';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -87,51 +122,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       localStorage.setItem('access_token', response.data.access_token);
       setToken(response.data.access_token);
+      setUser(response.data.user);
       setIsAuthenticated(true);
       navigate('/dashboard');
     } catch (error) {
-      console.log(error);
-      setError('Klaida jungiant vartotoja');
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.data?.error
+          ? error.response.data.error
+          : 'Login failed. Please check your credentials.';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    const loadUser = async () => {
-      if (token) {
-        try {
-          const config = {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          };
-          const response = await axios.get(`${API_URL}/auth/user`, config);
-          setIsAuthenticated(true);
-          setUser(response.data);
-        } catch (error) {
-          console.log(error);
-          localStorage.removeItem('access_token');
-          setToken(null);
-          setIsAuthenticated(false);
-          setError('Klaida gaunant vartotojo informacija');
-        }
-      }
-    };
-
-    loadUser();
-  }, [token]);
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    setToken(null);
+    setUser(null);
+    setIsAuthenticated(false);
+    navigate('/login');
+  };
 
   return (
     <AuthContext.Provider
       value={{
-        isLoading,
-        isAuthenticated,
-        token,
-        error,
         user,
+        access_token: token,
+        isAuthenticated,
+        isLoading,
+        error,
         register,
         login,
+        logout,
       }}
     >
       {children}

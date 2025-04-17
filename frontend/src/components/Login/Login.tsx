@@ -18,7 +18,7 @@ export const Login = () => {
   return (
     <div className="register-container">
       <div className="register-form-wrapper">
-        <h2>Registracija</h2>
+        <h2>Prisijungimas</h2>
 
         <form onSubmit={handleSubmit} className="register-form">
           <div className="form-group">

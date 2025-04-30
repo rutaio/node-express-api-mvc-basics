@@ -90,27 +90,7 @@ exports.login = async (req, res) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    // 1. Issitraukiam tokena is request headerio:
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-
-    // 2. Tikriname ar tokenas egzistuoja:
-    if (!token) {
-      return res.status(401).json({ error: 'Unauthorised' });
-    }
-
-    // 3. Tikriname ar tokenas yra validus (ar nepasibaiges, etc):
-    // Naudosime JWT_SECRET:
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // 4. Issitraukiame userio duomenis is duomenu bazes (isskyrus pwd):
-    const user = await User.findById(decoded.userId).select('-password');
-
-    // 5. user nera arba yra:
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.json(user);
-
+    res.json(req.user);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }

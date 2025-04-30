@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const carRoutes = require('./routes/carRoutes');
 const reviewsRoutes = require('./routes/reviewsRoutes');
 const authRoutes = require('./routes/authRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 
 // .env failas nuo zodzio environment - aplinka. tai tiesiog paprastas tekstinis failas, kuriame saugome kintamuosius kuriu nenorime kad
 // kiti turetu. Dazniausiai tai yra slapta informacija, duomenu bazes prisijungimai, PORT ar kokie nors slaptazodziai.
@@ -32,6 +33,8 @@ app.use('/api/reviews', reviewsRoutes);
 
 // For users logging in:
 app.use('/api/auth', authRoutes);
+
+app.use('/api/reservations', reservationRoutes);
 
 // pasakome kad trauktu info is env failo:
 const PORT = process.env.PORT || 3001;

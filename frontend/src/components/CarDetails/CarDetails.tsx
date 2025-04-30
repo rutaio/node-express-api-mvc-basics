@@ -2,11 +2,13 @@
 // useParams - yra Hook, kuris yra naudojamas gauti URL parametrus, pvz id => :id
 // - zino, kokiame mes puslapyje pagal id esame
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import './car-details.css';
 import { Car } from '../../types/CarTypes';
-import {API_URL} from '../../constants/global';
+import { API_URL } from '../../constants/global';
+import { AuthContext } from '../../context/AuthContext';
+import { ReservationModal } from '../ReservationModal/ReservationModal';
 
 export const CarDetails = () => {
   // Hooks apsirasome virsuje
@@ -14,18 +16,28 @@ export const CarDetails = () => {
   const { id } = useParams();
   // apsirasome null, tuo atveju jeigu ieskomo automobilio nebutu, tada duomenu tipas butu "null":
   const [car, setCar] = useState<Car | null>(null);
+  const { user } = useContext(AuthContext);
+  const [isReservationModalVisible, setIsReservationModalVisible] =
+    useState(false);
 
   const handleBackClick = () => {
     navigate('/');
+  };
+
+  const handleReserveClick = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    setIsReservationModalVisible(true);
   };
 
   // fetchinam visus automobilius is backendo:
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/cars/${id}`
-        );
+        const response = await axios.get(`${API_URL}/cars/${id}`);
         setCar(response.data);
       } catch (error) {
         console.log(error);
@@ -77,11 +89,18 @@ export const CarDetails = () => {
             </div>
             <div className="spec-item">
               <span className="spec-label">Kaina per diena: </span>
-              <span className="spec-value">${car?.price ?? 'Ivyko klaida'}</span>
+              <span className="spec-value">
+                ${car?.price ?? 'Ivyko klaida'}
+              </span>
             </div>
           </div>
           <div className="car-actions">
-            <button className="button button-primary">Rezervuoti</button>
+            <button
+              className="button button-primary"
+              onClick={handleReserveClick}
+            >
+              Rezervuoti
+            </button>
             <button
               className="button button-secondary"
               onClick={handleBackClick}
@@ -91,6 +110,13 @@ export const CarDetails = () => {
           </div>
         </div>
       </div>
+      {isReservationModalVisible && car && (
+        <ReservationModal
+          onModalClose={() => setIsReservationModalVisible(false)}
+          onSuccess={() => setIsReservationModalVisible(false)}
+          car={car}
+        />
+      )}
     </div>
   );
 };

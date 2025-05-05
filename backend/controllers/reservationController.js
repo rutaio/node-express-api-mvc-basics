@@ -1,7 +1,7 @@
 const Reservation = require('../models/reservationModel');
 const Car = require('../models/carModel');
 
-// sukuriame rezervacija:
+// Sukuriame rezervacija:
 exports.createReservation = async (req, res) => {
   try {
     const { carId, totalDays, startDate, endDate } = req.body;
@@ -55,5 +55,34 @@ exports.createReservation = async (req, res) => {
     res.status(201).json({ message: 'Reservation was created successfully!' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create reservation' });
+  }
+};
+
+// Gaunam vartotojo rezervacijas:
+exports.getUserReservations = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const reservations = await Reservation.find({ userId });
+    res.status(200).json(reservations);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get user reservations' });
+  }
+};
+
+exports.deleteReservation = async (req, res) => {
+  try {
+    // SVARBU: req.params.id parasytas be ._id, nes traukiame is url, ne is body (mongodb)
+    const reservationId = req.params.id;
+    const deletedReservation = await Reservation.findByIdAndDelete(
+      reservationId
+    );
+
+    if (!deletedReservation) {
+      return res.status(404).json({ error: 'Reservation not found!' });
+    }
+
+    res.status(201).json({ message: 'Reservation deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete a user reservation' });
   }
 };

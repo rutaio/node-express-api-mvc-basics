@@ -4,6 +4,9 @@ const reservationSchema = new mongoose.Schema(
   {
     carId: {
       type: mongoose.Schema.Types.ObjectId,
+      // ref - nurodo kurioje kolekcijoje yra automobilis, kad galetume apjungti duomenis
+      // sitas Car ateina is carModel paskutines eilutes
+      ref: 'Car',
       required: true,
     },
     userId: {

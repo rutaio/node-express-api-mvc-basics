@@ -4,14 +4,15 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import { API_URL } from '../constants/global';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../types/UserTypes';
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  // ar cia nereikia nurodyti? password: string;
-  role: string;
-}
+// perkeliame sita i types file:
+//interface User {
+//  _id: string;
+//  name: string;
+//  email: string;
+//  role: string;
+// }
 
 interface AuthContextType {
   user: User | null;

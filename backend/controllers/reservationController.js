@@ -59,11 +59,37 @@ exports.createReservation = async (req, res) => {
 };
 
 // Gaunam vartotojo rezervacijas:
+// pasiredaguojam kad grazintu rezervacijas kartu su car duomenimis:
+// - naudosime .populate() ir .lean()
 exports.getUserReservations = async (req, res) => {
   try {
     const userId = req.user._id;
-    const reservations = await Reservation.find({ userId });
-    res.status(200).json(reservations);
+    const reservations = await Reservation.find({ userId })
+      .populate('carId', 'make model seats image') // .populate() - istrauk masinos info ir pridek konkrecius laukelius
+      .lean(); // .lean() - grazina paprastus js objektus, o ne mongoose dokumentus
+
+    const formattedReservations = reservations.map((reservation) => ({
+      ...reservation, // galime rasyti tik ...reservation
+      startDate: reservation.startDate.toLocaleDateString('lt-LT', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      endDate: reservation.endDate.toLocaleDateString('lt-LT', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      createdAt: reservation.createdAt.toLocaleDateString('lt-LT', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      car: reservation.carId, // cia jau formatuojame del grozio
+      carId: reservation.carId._id, // cia jau formatuojame del grozio
+    }));
+
+    res.status(200).json(formattedReservations);
   } catch (error) {
     res.status(500).json({ error: 'Failed to get user reservations' });
   }
@@ -76,6 +102,8 @@ exports.deleteReservation = async (req, res) => {
     const deletedReservation = await Reservation.findByIdAndDelete(
       reservationId
     );
+
+    // galima prideti IF ELSE, pvz negali istrint jei jau prasidejo rezervacijos diena ar jei jau yra apmoketa
 
     if (!deletedReservation) {
       return res.status(404).json({ error: 'Reservation not found!' });

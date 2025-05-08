@@ -70,21 +70,9 @@ exports.getUserReservations = async (req, res) => {
 
     const formattedReservations = reservations.map((reservation) => ({
       ...reservation, // galime rasyti tik ...reservation
-      startDate: reservation.startDate.toLocaleDateString('lt-LT', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
-      endDate: reservation.endDate.toLocaleDateString('lt-LT', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
-      createdAt: reservation.createdAt.toLocaleDateString('lt-LT', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
+      startDate: reservation.startDate,
+      endDate: reservation.endDate,
+      createdAt: reservation.createdAt,
       car: reservation.carId, // cia jau formatuojame del grozio
       carId: reservation.carId._id, // cia jau formatuojame del grozio
     }));

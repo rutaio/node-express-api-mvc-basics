@@ -43,14 +43,21 @@ exports.getCarById = async (req, res) => {
   }
 };
 
+// ADMIN only
 // POST - works on postman! :)
 exports.createCar = async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ error: 'No authorised. Admin access required' });
+    }
+
     const newCar = new Car(req.body);
     await newCar.save();
     res.status(201).json({ message: 'Car created successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Failed to create a car in a server' });
   }
 };
 
@@ -69,7 +76,7 @@ exports.updateCar = async (req, res) => {
 
     res.status(201).json({ message: 'Car updated successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Failed to update a car in a server' });
   }
 };
 

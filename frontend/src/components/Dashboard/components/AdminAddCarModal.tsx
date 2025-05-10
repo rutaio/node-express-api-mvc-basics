@@ -7,16 +7,19 @@ interface AdminAddCarModalProps {
   onSubmit: (formData: Car) => void;
 }
 
-export const AdminAddCarModal: React.FC<AdminAddCarModalProps> = ({}) => {
+export const AdminAddCarModal = ({
+  onModalClose,
+  onSubmit,
+}: AdminAddCarModalProps) => {
   const [make, setMake] = useState<string>('');
   const [model, setModel] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [price, setPrice] = useState<number | null>(0);
+  const [price, setPrice] = useState<number>(30);
   const [features, setFeatures] = useState<string[]>([]);
   const [transmission, setTransmission] = useState<string>('manual');
   const [fuelType, setFuelType] = useState<string>('petrol');
-  const [seats, setSeats] = useState<number | null>(0);
-  const [year, setYear] = useState<number | null>(0);
+  const [seats, setSeats] = useState<number>(2);
+  const [year, setYear] = useState<number>(2000);
   const [image, setImage] = useState<string>('');
 
   const handleFeaturesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,9 +27,9 @@ export const AdminAddCarModal: React.FC<AdminAddCarModalProps> = ({}) => {
     setFeatures(value.split(',').map((item) => item.trim()));
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({
+    const formData = {
       make,
       model,
       description,
@@ -37,7 +40,7 @@ export const AdminAddCarModal: React.FC<AdminAddCarModalProps> = ({}) => {
       seats,
       year,
       image,
-    });
+    };
 
     onSubmit(formData);
   };
@@ -76,8 +79,8 @@ export const AdminAddCarModal: React.FC<AdminAddCarModalProps> = ({}) => {
             <div className="form-group">
               <label htmlFor="description">Description:</label>
               <textarea
-                id="description"
                 rows={3}
+                id="description"
                 value={description}
                 required
                 onChange={(e) => setDescription(e.target.value)}
@@ -98,8 +101,8 @@ export const AdminAddCarModal: React.FC<AdminAddCarModalProps> = ({}) => {
             <div className="form-group">
               <label htmlFor="features">Features (comma separated):</label>
               <input
-                id="features"
                 type="text"
+                id="features"
                 value={features.join(',')}
                 required
                 onChange={handleFeaturesChange}
@@ -168,7 +171,7 @@ export const AdminAddCarModal: React.FC<AdminAddCarModalProps> = ({}) => {
             </div>
 
             <div className="modal-actions">
-              <button type="submit">Save</button>
+              <button type="submit">Add Car</button>
             </div>
           </form>
         </div>

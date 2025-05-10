@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../../constants/global';
 import { Car } from '../../../types/CarTypes';
 import { AdminAddCarModal } from './AdminAddCarModal';
+import { AuthContext } from '../../../context/AuthContext';
 
 export const AdminCarsTab = () => {
+  const { access_token } = useContext(AuthContext);
   const [cars, setCars] = useState<Car[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAdminAddCarModalVisible, setIsAdminAddCarModalVisible] =
-    useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // GET request:
   const fetchCars = async () => {
@@ -22,34 +23,38 @@ export const AdminCarsTab = () => {
     }
   };
 
+  // POST request:
+  const handleCarSubmit = async (formData: Car) => {
+    if (!access_token) {
+      alert('You are not authorized to perform this action.');
+      return;
+    }
+    
+    const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
+
+    try {
+      await axios.post(`${API_URL}/cars`, formData, config);
+      setIsModalOpen(false);
+      fetchCars();
+    } catch (error) {
+      console.log(error);
+      alert('Failed to add a car');
+    }
+  };
+
   useEffect(() => {
     fetchCars();
   }, []);
-
-  // POST request:
-  const handleCarSubmit = async (formData: Car) => {
-    const config = {
-      headers: {
-        Authoriztion: `Bearer ${localStorage.getItem('token')}`,
-      },
-    };
-    try {
-      await axios.post(`${API_URL}/cars`, formData, config);
-      setIsAdminAddCarModalVisible(false);
-    } catch (error) {
-      console.log(error);
-      alert('failed to add a car');
-    }
-  };
 
   return (
     <div className="admin-tab">
       <div className="admin-header">
         <h2>Car Management</h2>
-        <button
-          className="btn"
-          onClick={() => setIsAdminAddCarModalVisible(true)}
-        >
+        <button className="btn" onClick={() => setIsModalOpen(true)}>
           Add New Car
         </button>
       </div>
@@ -87,9 +92,9 @@ export const AdminCarsTab = () => {
         </table>
       )}
 
-      {isAdminAddCarModalVisible && (
+      {isModalOpen && (
         <AdminAddCarModal
-          onModalClose={() => setIsAdminAddCarModalVisible(false)}
+          onModalClose={() => setIsModalOpen(false)}
           onSubmit={handleCarSubmit}
         />
       )}

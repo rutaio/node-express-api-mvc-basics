@@ -50,7 +50,7 @@ exports.createCar = async (req, res) => {
     if (req.user.role !== 'admin') {
       return res
         .status(403)
-        .json({ error: 'No authorised. Admin access required' });
+        .json({ error: 'No authorized. Admin access required' });
     }
 
     const newCar = new Car(req.body);

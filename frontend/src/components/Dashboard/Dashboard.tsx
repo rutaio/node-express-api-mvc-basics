@@ -7,6 +7,7 @@ import axios from 'axios';
 import { API_URL } from '../../constants/global';
 import { Reservation } from '../../types/ReservationTypes';
 import { AdminCarsTab } from './components/AdminCarsTab';
+import { AdminReservationsTab } from './components/AdminReservationsTab';
 
 type Tab = 'user' | 'admin-cars' | 'admin-reservations';
 
@@ -123,11 +124,7 @@ export const Dashboard = () => {
           </>
         )}
         {activeTab === 'admin-cars' && <AdminCarsTab />}
-        {activeTab === 'admin-reservations' && (
-          <>
-            <div>Admin reservations</div>
-          </>
-        )}
+        {activeTab === 'admin-reservations' && <AdminReservationsTab />}
       </div>
     </div>
   );

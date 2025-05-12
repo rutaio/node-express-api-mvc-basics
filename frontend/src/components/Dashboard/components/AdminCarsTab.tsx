@@ -10,6 +10,7 @@ export const AdminCarsTab = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
   // GET request:
   const fetchCars = async () => {
@@ -23,13 +24,12 @@ export const AdminCarsTab = () => {
     }
   };
 
-  // POST request:
   const handleCarSubmit = async (formData: Car) => {
     if (!access_token) {
       alert('You are not authorized to perform this action.');
       return;
     }
-    
+
     const config = {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -37,12 +37,57 @@ export const AdminCarsTab = () => {
     };
 
     try {
-      await axios.post(`${API_URL}/cars`, formData, config);
+      // PATCH request:
+      if (selectedCar) {
+        await axios.patch(
+          `${API_URL}/cars/${selectedCar._id}`,
+          formData,
+          config
+        );
+      } else {
+        // POST request:
+        await axios.post(`${API_URL}/cars`, formData, config);
+      }
+
       setIsModalOpen(false);
       fetchCars();
     } catch (error) {
       console.log(error);
       alert('Failed to add a car');
+    }
+  };
+
+  const handleEditCar = (car: Car) => {
+    setSelectedCar(car);
+    setIsModalOpen(true);
+  };
+
+  // DELETE request:
+  const handleDeleteCar = async (_id: string) => {
+    const confirm = window.confirm(
+      'Are you sure you want to delete this car and reservations associated with it?'
+    );
+
+    if (!confirm) {
+      return;
+    }
+
+    if (!access_token) {
+      alert('You are not authorized to perform this action.');
+      return;
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
+
+    try {
+      await axios.delete(`${API_URL}/cars/${_id}`, config);
+      setCars(cars.filter((car) => car._id !== _id));
+    } catch (error) {
+      console.error('Error in deleting todo:', error);
     }
   };
 
@@ -84,7 +129,18 @@ export const AdminCarsTab = () => {
                 <td>{car.year}</td>
                 <td>{car.price}€</td>
                 <td>
-                  <button className="btn-edit">Edit</button>
+                  <button
+                    className="btn-edit"
+                    onClick={() => handleEditCar(car)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn-delete"
+                    onClick={() => handleDeleteCar(car._id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -94,8 +150,12 @@ export const AdminCarsTab = () => {
 
       {isModalOpen && (
         <AdminAddCarModal
-          onModalClose={() => setIsModalOpen(false)}
+          onModalClose={() => {
+            setIsModalOpen(false);
+            setSelectedCar(null);
+          }}
           onSubmit={handleCarSubmit}
+          selectedCar={selectedCar}
         />
       )}
     </div>

@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
+// be authMiddleware negaletume patikrinti ar useris yra: a)prisijunges, b)admin
+
 // cia atliekame MIDDLEWARE'o veiksma (kas ivyksta tarp request ir response)
 // - ar useris yra authentifikuotas ar ne
 // (kai yra paduodamas Bearer token)

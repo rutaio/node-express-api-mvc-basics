@@ -1,15 +1,17 @@
 import '../../ReservationModal/reservation-modal.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Car } from '../../../types/CarTypes';
 
 interface AdminAddCarModalProps {
   onModalClose: () => void;
   onSubmit: (formData: Car) => void;
+  selectedCar: Car | null;
 }
 
 export const AdminAddCarModal = ({
   onModalClose,
   onSubmit,
+  selectedCar,
 }: AdminAddCarModalProps) => {
   const [make, setMake] = useState<string>('');
   const [model, setModel] = useState<string>('');
@@ -45,6 +47,21 @@ export const AdminAddCarModal = ({
     onSubmit(formData);
   };
 
+  useEffect(() => {
+    if (selectedCar) {
+      setMake(selectedCar.make);
+      setModel(selectedCar.model);
+      setDescription(selectedCar.description);
+      setPrice(selectedCar.price);
+      setFeatures(selectedCar.features);
+      setTransmission(selectedCar.transmission);
+      setFuelType(selectedCar.fuelType);
+      setSeats(selectedCar.seats);
+      setYear(selectedCar.year);
+      setImage(selectedCar.image);
+    }
+  }, [selectedCar]);
+
   return (
     <>
       <div className="modal-overlay">
@@ -52,7 +69,7 @@ export const AdminAddCarModal = ({
           <span className="close" onClick={onModalClose}>
             x
           </span>
-          <h2>Add New Car</h2>
+          <h2>{selectedCar ? 'Edit Car' : 'Add New Car'}</h2>
           <form onSubmit={handleFormSubmit}>
             <div className="form-group">
               <label htmlFor="make">Make:</label>
@@ -171,7 +188,9 @@ export const AdminAddCarModal = ({
             </div>
 
             <div className="modal-actions">
-              <button type="submit">Add Car</button>
+              <button type="submit">
+                {selectedCar ? 'Update Car' : 'Add Car'}
+              </button>
             </div>
           </form>
         </div>

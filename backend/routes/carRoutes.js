@@ -12,7 +12,8 @@ const router = express.Router();
 router.get('/', carsController.getCars);
 router.get('/:id', carsController.getCarById);
 router.post('/', authMiddleware, carsController.createCar);
-router.patch('/:id', carsController.updateCar);
-router.delete('/:id', carsController.deleteCar);
+// PATCH is used for partially updating existing resources (PUT is used for replacing resources):
+router.patch('/:id', authMiddleware, carsController.updateCar);
+router.delete('/:id', authMiddleware, carsController.deleteCar);
 
 module.exports = router;

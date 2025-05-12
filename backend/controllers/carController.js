@@ -1,5 +1,6 @@
 // Controller - valdo logika, kaip reaguoti i API uzklausas/requests, ir kreipiasi i Model, jeigu atitinka business logika (t.y. grazins visada):
 const Car = require('../models/carModel');
+const Reservation = require('../models/reservationModel');
 
 // GET: ankstesnis budas:
 //const getCars = (req, res) => {
@@ -47,6 +48,8 @@ exports.getCarById = async (req, res) => {
 // POST - works on postman! :)
 exports.createCar = async (req, res) => {
   try {
+    // authMiddleware atiduoda mums user objekta, is kurio suzinome kad useris yra admin arba ne
+    // be authMiddleware negaletume patikrinti ar useris yra: a)prisijunges, b)admin
     if (req.user.role !== 'admin') {
       return res
         .status(403)
@@ -61,11 +64,19 @@ exports.createCar = async (req, res) => {
   }
 };
 
-// PATCH - how to test with postman if this is correct??
+// ADMIN only
+// PATCH - works on postman :)
 exports.updateCar = async (req, res) => {
   try {
-    const id = req.params.id;
-    const updatedCar = await Car.findByIdAndUpdate(id, req.body, {
+    if (req.user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ error: 'No authorized. Admin access required' });
+    }
+
+    const carId = req.params.id;
+    const updates = req.body;
+    const updatedCar = await Car.findByIdAndUpdate(carId, updates, {
       new: true,
       runValidators: true,
     });
@@ -74,23 +85,35 @@ exports.updateCar = async (req, res) => {
       return res.status(404).json({ error: 'Car not found' });
     }
 
-    res.status(201).json({ message: 'Car updated successfully' });
+    res.status(200).json({ message: 'Car updated successfully' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Failed to update a car in a server' });
   }
 };
 
+// ADMIN only
 // DELETE - how to test with postman if this is correct??
 exports.deleteCar = async (req, res) => {
   try {
-    const id = req.params.id;
-    const deletedCar = await Car.findByIdAndDelete(id);
+    if (req.user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ error: 'No authorized. Admin access required' });
+    }
+
+    const carId = req.params.id;
+
+    // nueis i rezervaciju lentele ir suras visas rezervacijas su sia car:
+    await Reservation.deleteMany({ carId });
+
+    const deletedCar = await Car.findByIdAndDelete(carId);
 
     if (!deletedCar) {
       return res.status(404).json({ error: 'Car not found' });
     }
 
-    res.status(201).json({ message: 'Car deleted successfully' });
+    res.status(200).json({ message: 'Car deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }

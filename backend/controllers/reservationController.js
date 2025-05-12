@@ -58,6 +58,36 @@ exports.createReservation = async (req, res) => {
   }
 };
 
+// ADMIN only
+exports.getAllReservations = async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ error: 'No authorized. Admin access required' });
+    }
+
+    // noresim paimt visas rezervacijas ir prikabinti automobilion duomenis:
+    const allReservations = await Reservation.find()
+      .populate('carId', 'make model image price')
+      .populate('userId', 'name email')
+      .lean();
+
+    const formattedReservations = allReservations.map((reservation) => ({
+      ...reservation,
+      car: reservation.carId,
+      carId: reservation.carId._id,
+      user: reservation.userId, 
+      userId: reservation.userId._id,
+    }));
+
+    res.status(200).json(formattedReservations);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to get all reservations' });
+  }
+};
+
 // Gaunam vartotojo rezervacijas:
 // pasiredaguojam kad grazintu rezervacijas kartu su car duomenimis:
 // - naudosime .populate() ir .lean()

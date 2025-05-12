@@ -26,9 +26,9 @@ function App() {
                 <Route path="/login" element={<Login />} />
 
                 {/*Tikriname, ar zmogus gali patekti i dashboard */}
-                <Route path="/dashboard" element={<Dashboard />} />
-                 <Route element={<ProtectedRoute />}>
-               </Route> 
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
               </Routes>
             </main>
           </div>

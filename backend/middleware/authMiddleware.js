@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     // 2. Pasiziurim ar token egzistuoja:
     if (!token) {
-      return res.status(401).json({ error: 'Unauthorised' });
+      return res.status(401).json({ error: 'Unauthorized' });
     }
     // 3. Tikriname ar tokenas yra validus (ar nepasibaiges, etc):
     // Naudosime JWT_SECRET:
@@ -29,6 +29,12 @@ const authMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
     res.status(500).json({ error: 'Server error' });
   }
 };

@@ -8,8 +8,9 @@ import { API_URL } from '../../constants/global';
 import { Reservation } from '../../types/ReservationTypes';
 import { AdminCarsTab } from './components/AdminCarsTab';
 import { AdminReservationsTab } from './components/AdminReservationsTab';
+import { UserManagement } from './components/UserManagement';
 
-type Tab = 'user' | 'admin-cars' | 'admin-reservations';
+type Tab = 'user' | 'admin-cars' | 'admin-reservations' | 'admin-users';
 
 // Kaip atvaizduoti Rezervacijas Dashboarde:
 // 0. Susikuriame API interface
@@ -108,6 +109,14 @@ export const Dashboard = () => {
           >
             All Reservations
           </button>
+          <button
+            className={`tab-button ${
+              activeTab === 'admin-users' ? 'active' : ''
+            }`}
+            onClick={() => setActiveTab('admin-users')}
+          >
+            All Users
+          </button>
         </div>
       )}
 
@@ -125,6 +134,7 @@ export const Dashboard = () => {
         )}
         {activeTab === 'admin-cars' && <AdminCarsTab />}
         {activeTab === 'admin-reservations' && <AdminReservationsTab />}
+        {activeTab === 'admin-users' && <UserManagement />}
       </div>
     </div>
   );

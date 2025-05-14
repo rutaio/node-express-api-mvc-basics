@@ -11,5 +11,7 @@ router.post('/login', authController.login);
 // User profile:
 // kai middleware uzdedame per viduri, reiskia mum svarbu patikrinti ar useris yra authentifikuotas:
 router.get('/user', authMiddleware, authController.getCurrentUser);
+// All users:
+router.get('/users', authMiddleware, authController.getAllUsers);
 
 module.exports = router;

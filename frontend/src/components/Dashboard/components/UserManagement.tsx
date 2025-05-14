@@ -1,16 +1,16 @@
 import axios from 'axios';
 import { API_URL } from '../../../constants/global';
+import { User } from '../../../types/UserTypes';
 import { useState, useEffect } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useContext } from 'react';
-import { Reservation } from '../../../types/ReservationTypes';
 
-export const AdminReservationsTab = () => {
+export const UserManagement = () => {
+  const [users, setUsers] = useState<User[]>([]);
   const { access_token } = useContext(AuthContext);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchReservations = async () => {
+  const fetchUsers = async () => {
     try {
       setIsLoading(true);
       const config = {
@@ -18,14 +18,10 @@ export const AdminReservationsTab = () => {
           Authorization: `Bearer ${access_token}`,
         },
       };
-
-      const response = await axios.get<Reservation[]>(
-        `${API_URL}/reservations/all`,
-        config
-      );
-      setReservations(response.data);
+      const response = await axios.get<User[]>(`${API_URL}/auth/users`, config);
+      setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching reservations:', error);
+      console.error('Error fetching users', error);
     } finally {
       setIsLoading(false);
     }
@@ -33,7 +29,7 @@ export const AdminReservationsTab = () => {
 
   useEffect(() => {
     if (access_token) {
-      fetchReservations();
+      fetchUsers();
     }
   }, [access_token]);
 
@@ -52,23 +48,19 @@ export const AdminReservationsTab = () => {
         <table className="reservation-table">
           <thead>
             <tr>
-              <th>User</th>
-              <th>Car</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Total Price</th>
-              <th>Booking Date</th>
+              <th>User Name</th>
+              <th>User Email</th>
+              <th>User Role</th>
+              <th>Date Created</th>
             </tr>
           </thead>
           <tbody>
-            {reservations.map((reservation) => (
-              <tr key={reservation._id}>
-                <td>{reservation.user.email}</td>
-                <td>{reservation.car.make}</td>
-                <td>{formatDate(reservation.startDate)}</td>
-                <td>{formatDate(reservation.endDate)}</td>
-                <td>{reservation.totalPrice}€</td>
-                <td>{formatDate(reservation.createdAt)}</td>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>{formatDate(user.createdAt)}</td>
               </tr>
             ))}
           </tbody>

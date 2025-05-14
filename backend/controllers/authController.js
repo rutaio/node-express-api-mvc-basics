@@ -95,3 +95,21 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+// ADMIN only - nezinau ar gerai sis kodas:
+exports.getAllUsers = async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ error: 'No authorized. Admin access required' });
+    }
+
+    const allUsers = await User.find();
+
+    res.status(200).json(allUsers);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to get all users' });
+  }
+};

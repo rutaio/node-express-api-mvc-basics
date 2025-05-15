@@ -6,9 +6,9 @@ import { ReservationList } from './components/ReservationList';
 import axios from 'axios';
 import { API_URL } from '../../constants/global';
 import { Reservation } from '../../types/ReservationTypes';
-import { AdminCarsTab } from './components/AdminCarsTab';
-import { AdminReservationsTab } from './components/AdminReservationsTab';
-import { UserManagement } from './components/UserManagement';
+import { AdminCarsTab } from './components/CarsTab/AdminCarsTab';
+import { AdminReservationsTab } from './components/Reservations Tab/AdminReservationsTab';
+import { AdminAllUsersTab } from './components/UsersTab/AdminAllUsersTab';
 
 type Tab = 'user' | 'admin-cars' | 'admin-reservations' | 'admin-users';
 
@@ -134,7 +134,7 @@ export const Dashboard = () => {
         )}
         {activeTab === 'admin-cars' && <AdminCarsTab />}
         {activeTab === 'admin-reservations' && <AdminReservationsTab />}
-        {activeTab === 'admin-users' && <UserManagement />}
+        {activeTab === 'admin-users' && <AdminAllUsersTab />}
       </div>
     </div>
   );

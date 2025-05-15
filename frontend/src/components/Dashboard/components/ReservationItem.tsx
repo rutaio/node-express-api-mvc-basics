@@ -1,4 +1,5 @@
 import { Reservation } from '../../../types/ReservationTypes';
+import { formatDate } from '../../../utlis/date';
 
 interface ReservationItemProps {
   reservation: Reservation;
@@ -11,11 +12,6 @@ export const ReservationItem = ({
   onDelete,
   isDeleting,
 }: ReservationItemProps) => {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
-  };
-
   return (
     <div className="reservation-item">
       <div className="reservation-car-info">

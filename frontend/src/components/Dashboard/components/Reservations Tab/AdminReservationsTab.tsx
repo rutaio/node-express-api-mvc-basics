@@ -1,13 +1,14 @@
 import axios from 'axios';
-import { API_URL } from '../../../constants/global';
+import { API_URL } from '../../../../constants/global';
 import { useState, useEffect } from 'react';
-import { AuthContext } from '../../../context/AuthContext';
+import { AuthContext } from '../../../../context/AuthContext';
 import { useContext } from 'react';
-import { Reservation } from '../../../types/ReservationTypes';
+import { AllReservations } from '../../../../types/ReservationTypes';
+import { formatDate } from '../../../../utlis/date';
 
 export const AdminReservationsTab = () => {
   const { access_token } = useContext(AuthContext);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<AllReservations[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchReservations = async () => {
@@ -19,7 +20,7 @@ export const AdminReservationsTab = () => {
         },
       };
 
-      const response = await axios.get<Reservation[]>(
+      const response = await axios.get<AllReservations[]>(
         `${API_URL}/reservations/all`,
         config
       );
@@ -37,11 +38,6 @@ export const AdminReservationsTab = () => {
     }
   }, [access_token]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
-  };
-
   return (
     <div className="admin-tab">
       <h2>All Reservations</h2>
@@ -49,7 +45,7 @@ export const AdminReservationsTab = () => {
       {isLoading ? (
         <p>Is loading...</p>
       ) : (
-        <table className="reservation-table">
+        <table className="primary-table">
           <thead>
             <tr>
               <th>User</th>
@@ -64,7 +60,19 @@ export const AdminReservationsTab = () => {
             {reservations.map((reservation) => (
               <tr key={reservation._id}>
                 <td>{reservation.user.email}</td>
-                <td>{reservation.car.make}</td>
+                <td>
+                  <div className="car-details">
+                    <img
+                      src={reservation.car.image}
+                      alt="car image"
+                      className="car-image"
+                    ></img>
+                    <div>
+                      {' '}
+                      {reservation.car.make} {reservation.car.model}
+                    </div>
+                  </div>
+                </td>
                 <td>{formatDate(reservation.startDate)}</td>
                 <td>{formatDate(reservation.endDate)}</td>
                 <td>{reservation.totalPrice}€</td>

@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_URL } from '../../../constants/global';
-import { Car } from '../../../types/CarTypes';
+import { API_URL } from '../../../../constants/global';
+import { Car } from '../../../../types/CarTypes';
 import { AdminAddCarModal } from './AdminAddCarModal';
-import { AuthContext } from '../../../context/AuthContext';
+import { AuthContext } from '../../../../context/AuthContext';
 
 export const AdminCarsTab = () => {
   const { access_token } = useContext(AuthContext);
@@ -107,7 +107,7 @@ export const AdminCarsTab = () => {
       {isLoading ? (
         <p>Is loading...</p>
       ) : (
-        <table className="reservation-table">
+        <table className="primary-table">
           <thead>
             <tr>
               <th>Image</th>

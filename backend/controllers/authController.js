@@ -96,7 +96,8 @@ exports.getCurrentUser = async (req, res) => {
   }
 };
 
-// ADMIN only - nezinau ar gerai sis kodas:
+// ADMIN only
+// authMiddleware duoda info apie user role:
 exports.getAllUsers = async (req, res) => {
   try {
     if (req.user.role !== 'admin') {
@@ -106,10 +107,33 @@ exports.getAllUsers = async (req, res) => {
     }
 
     const allUsers = await User.find();
-
     res.status(200).json(allUsers);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Failed to get all users' });
+  }
+};
+
+// ADMIN only - PUT request:
+exports.updateUserRole = async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res
+        .status(403)
+        .json({ error: 'No authorized. Admin access required' });
+    }
+
+    const { userId } = req.params;
+    const { role } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { role },
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to update a user in a server' });
   }
 };

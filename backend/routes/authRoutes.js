@@ -14,4 +14,7 @@ router.get('/user', authMiddleware, authController.getCurrentUser);
 // All users:
 router.get('/users', authMiddleware, authController.getAllUsers);
 
+// PUT request:
+router.put('/user/update-role/:id', authMiddleware, authController.updateUserRole);
+
 module.exports = router;

@@ -1,6 +1,6 @@
-import '../../ReservationModal/reservation-modal.css';
+import '../../../ReservationModal/reservation-modal.css';
 import { useState, useEffect } from 'react';
-import { Car } from '../../../types/CarTypes';
+import { Car } from '../../../../types/CarTypes';
 
 interface AdminAddCarModalProps {
   onModalClose: () => void;

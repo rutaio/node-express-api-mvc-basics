@@ -343,7 +343,7 @@
 }
 
 /* Table styles */
-.reservation-table {
+.primary-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
@@ -353,7 +353,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.reservation-table th {
+.primary-table th {
   background-color: #4a6fa5;
   color: white;
   padding: 14px 15px;
@@ -362,17 +362,17 @@
   white-space: nowrap;
 }
 
-.reservation-table td {
+.primary-table td {
   padding: 14px 15px;
   border-bottom: 1px solid #eee;
   color: #333;
 }
 
-.reservation-table tr:nth-child(even) {
+.primary-table tr:nth-child(even) {
   background-color: #f9fafc;
 }
 
-.reservation-table tr:hover {
+.primary-table tr:hover {
   background-color: #f0f4f9;
 }
 
